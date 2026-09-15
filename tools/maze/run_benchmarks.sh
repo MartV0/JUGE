@@ -1,20 +1,17 @@
 #!/bin/bash
 
-# Define benchmark configurations. Each config is a tuple: (s,m,p,a).
+# Define benchmark configurations. Each config is a tuple: (s).
 #
 #    s : search strategy or strategies (separated by comma, no space!)
-#    m : true/false whether or not suite minimalization is applied
-#    p : the --path-length-cov option of MAZE, e.g. 3. Use 0 to disable.
-#    a : the --target-path-aging option of MAZE
 #
 
 BENCHMARKS=(
-    "DFS true 0 0"
-    "BFS true 0 0"
-    "SGS true 0 0"
-    "RPS,COS true 0 0"
-    "FOS true 0 0"
-    "FOS,COS true 0 0"
+    "DFS"
+    "BFS"
+    "SGS"
+    "RPS,COS"
+    "FOS"
+    "FOS,COS"
 )
 
 # Check if the time budget is provided
@@ -29,19 +26,16 @@ TIME_BUDGET="$1"
 # Loop through each benchmark pair
 for benchmark in "${BENCHMARKS[@]}"; do
     strategy=$(echo "$benchmark" | awk '{print $1}')
-    minimize=$(echo "$benchmark" | awk '{print $2}')
-    pathlengthCov=$(echo "$benchmark" | awk '{print $3}')
-    pathaging=$(echo "$benchmark" | awk '{print $4}')
 
     echo "-----------------------------------"
-    echo "Running benchmark with strategy:$strategy, minimize:$minimize, path-length-cov:$pathlengthCov, target-path-aging:$pathaging"
+    echo "Running benchmark with strategy:$strategy"
     echo "-----------------------------------"
 
     # Update the runtool file to set search strategy and concrete-driven mode
     cat > "./runtool" << EOF
 #!/bin/bash
 
-java -cp lib/maze_runtool-1.0.0.jar sbst.runtool.Main "$strategy" "$minimize" "$pathlengthCov" "$pathaging"
+java -cp lib/maze_runtool-1.0.0.jar sbst.runtool.Main "$strategy"
 EOF
     chmod +x "./runtool"
 

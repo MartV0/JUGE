@@ -11,16 +11,10 @@ public class MazeTool implements ITestingTool {
 
     private String strategies; // comma-separated list of strategies
     private String concreteDriven; // "true" or "false"  --> not used in this BM
-    private String minimalisticSuite; // "true" or "false"
-    private String pathLengthToCover; // -1,0, or >0
-    private String pathAging; // -1,0, or >0
 
-    public MazeTool(String strategies, String minimalisticSuite, String pathLengthToCover, String pathAging) {
+    public MazeTool(String strategies) {
         this.strategies = strategies;
         //this.concreteDriven = concreteDriven;
-        this.minimalisticSuite = minimalisticSuite ;
-        this.pathLengthToCover = pathLengthToCover ;
-        this.pathAging = pathAging ;
     }
 
     public List<File> getExtraClassPath() {
@@ -65,9 +59,6 @@ public class MazeTool implements ITestingTool {
             command.add("--time-budget=" + timeBudget);
             command.add("--strategy=" + strategies);
             //command.add("--concrete-driven=" + concreteDriven);
-            command.add("--minimalistic-suite=" + this.minimalisticSuite) ;
-            command.add("--path-length-cov=" + this.pathLengthToCover) ;
-            command.add("--target-path-aging=" + this.pathAging) ; 
             // other params which are fixed:
             command.add("--max-depth=400");      
             command.add("--max-array-size=10") ;  
