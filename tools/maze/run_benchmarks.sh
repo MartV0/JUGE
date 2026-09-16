@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# Define benchmark configurations. Each config is a tuple: (s).
+# Define benchmark configurations. Each config is a tuple: (s, e).
 #
 #    s : search strategy or strategies (separated by comma, no space!)
+#    e (optional): extra arguments for the search strategy
 #
 
 BENCHMARKS=(
@@ -12,6 +13,7 @@ BENCHMARKS=(
     "RPS,COS"
     "FOS"
     "FOS,COS"
+    "PP" "d,b,h"
 )
 
 # Check if the time budget is provided
@@ -26,16 +28,17 @@ TIME_BUDGET="$1"
 # Loop through each benchmark pair
 for benchmark in "${BENCHMARKS[@]}"; do
     strategy=$(echo "$benchmark" | awk '{print $1}')
+    extraArgs=$(echo "$benchmark" | awk '{print $2}')
 
     echo "-----------------------------------"
-    echo "Running benchmark with strategy:$strategy"
+    echo "Running benchmark with strategy:$strategy", extra-search-arg:$extraArgs
     echo "-----------------------------------"
 
     # Update the runtool file to set search strategy and concrete-driven mode
     cat > "./runtool" << EOF
 #!/bin/bash
 
-java -cp lib/maze_runtool-1.0.0.jar sbst.runtool.Main "$strategy"
+java -cp lib/maze_runtool-1.0.0.jar sbst.runtool.Main "$strategy" "$extraArgs"
 EOF
     chmod +x "./runtool"
 

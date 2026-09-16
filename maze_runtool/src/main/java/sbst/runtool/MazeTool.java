@@ -11,9 +11,11 @@ public class MazeTool implements ITestingTool {
 
     private String strategies; // comma-separated list of strategies
     private String concreteDriven; // "true" or "false"  --> not used in this BM
+    private String extraArg; // Extra arguments passed to the search strategy
 
-    public MazeTool(String strategies) {
+    public MazeTool(String strategies, String extraArg) {
         this.strategies = strategies;
+        this.extraArg = extraArg;
         //this.concreteDriven = concreteDriven;
     }
 
@@ -58,6 +60,7 @@ public class MazeTool implements ITestingTool {
             // params which are configurable in this BM:
             command.add("--time-budget=" + timeBudget);
             command.add("--strategy=" + strategies);
+            command.add("--extra-search-arg=" + extraArg);
             //command.add("--concrete-driven=" + concreteDriven);
             // other params which are fixed:
             command.add("--max-depth=400");      
