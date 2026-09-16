@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 
 # R repository
-repository <- 'http://cran.us.r-project.org'
+repository <- 'http://cran.rstudio.com'
 # Install packages
 install.packages('data.table', repos=repository)
 install.packages('effsize', repos=repository)
