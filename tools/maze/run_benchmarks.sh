@@ -31,7 +31,7 @@ for benchmark in "${BENCHMARKS[@]}"; do
     extraArgs=$(echo "$benchmark" | awk '{print $2}')
 
     echo "-----------------------------------"
-    echo "Running benchmark with strategy:$strategy", extra-search-arg:$extraArgs
+    echo "Running benchmark with strategy:$strategy, extra-search-arg:$extraArgs"
     echo "-----------------------------------"
 
     # Update the runtool file to set search strategy and concrete-driven mode
@@ -51,8 +51,12 @@ EOF
     echo "Generating tests for $name with time budget $TIME_BUDGET"
     contest_generate_tests.sh "$name" 10 1 $TIME_BUDGET > state_log.txt 2> error_log.txt
 
+    echo "Analysing logs for $name"
+    dir_name=results_"$name"_"$TIME_BUDGET"
+    ./log_analyzer.sh "$dir_name"
+
     echo "Computing metrics for $name with time budget $TIME_BUDGET"
-    contest_compute_metrics.sh results_"$name"_"$TIME_BUDGET" > state_log.txt 2> error_log.txt
+    contest_compute_metrics.sh "$dir_name" > state_log.txt 2> error_log.txt
 
     echo "Finished benchmark $name"
     echo "-----------------------------------"

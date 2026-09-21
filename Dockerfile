@@ -12,6 +12,7 @@ RUN update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/jav
 # few utilities
 RUN apt-get install nano
 RUN apt-get install bash-completion
+RUN apt-get install bc
 
 # Install cvc4
 RUN apt-get install -y cvc4
@@ -22,17 +23,18 @@ RUN wget https://github.com/Z3Prover/z3/releases/download/z3-4.13.3/z3-4.13.3-x6
     && rm /tmp/z3.zip
 ENV LD_LIBRARY_PATH="/opt/z3/z3-4.13.3-x64-glibc-2.35/bin"
 
-# Copy the utility scripts to run the infrastructure
-COPY infrastructure/scripts/ /usr/local/bin/
-
 # Set timezone to avoid interactive prompt
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y tzdata
 
 # [R](https://www.r-project.org)
 RUN apt-get update && \
-    apt-get install -y libgmp-dev libmpfr-dev r-base && \
-    Rscript /usr/local/bin/get-libraries.R
+    apt-get install -y libgmp-dev libmpfr-dev r-base
+
+# Copy the utility scripts to run the infrastructure
+COPY infrastructure/scripts/ /usr/local/bin/
+
+RUN Rscript /usr/local/bin/get-libraries.R
 
 # Copy dependencies
 RUN mkdir -p /usr/local/bin/lib/
