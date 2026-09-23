@@ -59,11 +59,11 @@ To replicate the benchmarking of MAZE, follow these steps:
 5. After the benchmarks are completed, you can compute the final scores:
    ```sh
    contest_transcript_single.sh ./
-   score.sh results.tmp ./score
+   score.sh results.csv ./score
    ```
    This will create a score folder with the results of the benchmarks, including the Friedman test results, p-values, scores, and rankings.
    If in the previous step you ran the benchmarks with 10s and 60s time budgets, the resulting scores should correspond to the ones we obtained in our benchmarking.
-   Additional metrics and plots used in the evaluation are all derived from the raw data in the `results.tmp` file, or from results from a subset of strategies.
+   Additional metrics and plots used in the evaluation are all derived from the raw data in the `results.csv` file, or from results from a subset of strategies.
 
 For further instructions on how to run benchmarks using different MAZE configurations, or different benchmark sets, see the next section.
 
@@ -114,15 +114,15 @@ The above instruction will run the benchmarking for various MAZE strategies. If 
    ```sh
    contest_transcript_single.sh results_maze_<time-budget-seconds>
    ```
-   This will create a `results.tmp` file with all metrics in a single file.
+   This will create a `results.csv` file with all metrics in a single file.
    You can change `results_maze_<time-budget-seconds>` to `./` to combine all metrics from different results folders.
 1. Compute the score:
    ```sh
-   score.sh results.tmp <output-folder>
+   score.sh results.csv <output-folder>
    ```
    Creates a `detailed_score.csv` and `score_per_subject.csv` file with the scores for each benchmark subject in the `results_maze_<time-budget-seconds>` folder.
    Score calculations are described in the [README](/infrastructure/README) file in the `infrastructure` folder.
-   It also performs a statistical analysis of the scores if multiple tools (or multiple runs of the same tool with different names) are present in the `results.tmp` file.
+   It also performs a statistical analysis of the scores if multiple tools (or multiple runs of the same tool with different names) are present in the `results.csv` file.
 
 ## Benchmarking other tools
 

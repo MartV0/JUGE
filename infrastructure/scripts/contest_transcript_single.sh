@@ -2,7 +2,7 @@
 
 # author: Urko Rueda (2016)
 
-RESULTS_TRANSCRIPT="results.tmp"
+RESULTS_TRANSCRIPT="results.csv"
 
 if [ $# -ne 1 ]
 then
