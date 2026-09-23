@@ -13,7 +13,7 @@ then
 fi
 
 # header might change with new columns!
-header="tool,benchmark,class,run,preparationTime,generationTime,executionTime,testcaseNumber,uncompilableNumber,brokenTests,failTests,linesTotal,linesCovered,linesCoverageRatio,conditionsTotal,conditionsCovered,conditionsCoverageRatio,mutantsTotal,mutantsCovered,mutantsCoverageRatio,mutantsKilled,mutantsKillRatio,mutantsAlive,timeBudget,totalTestClasses"
+header="tool,benchmark,class,run,preparationTime,generationTime,executionTime,testcaseNumber,uncompilableNumber,brokenTests,failTests,linesTotal,linesCovered,linesCoverageRatio,conditionsTotal,conditionsCovered,conditionsCoverageRatio,mutantsTotal,mutantsCovered,mutantsCoverageRatio,mutantsKilled,mutantsKillRatio,mutantsAlive,timeBudget,totalTestClasses,targets,infeasible,uncovered,covered,lastCoverageTime,totalTime"
 
 echo $header >$RESULTS_TRANSCRIPT
 echo "Writing all transcripts into: $RESULTS_TRANSCRIPT"
@@ -24,7 +24,7 @@ do
 	echo "  doing: [$idx] $TRANSCRIPT"
 	cat $TRANSCRIPT | while read TR_LINE
 	do
-		if [[ $TR_LINE != $header ]] && [[ -n $TR_LINE ]]
+		if [[ $header != $TR_LINE* ]] && [[ -n $TR_LINE ]]
 		then
 			echo $TR_LINE >>$RESULTS_TRANSCRIPT
 		fi
