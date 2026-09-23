@@ -1,4 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+trapERR() {
+    local ss=$? bc="$BASH_COMMAND" ln="$BASH_LINENO"
+    echo ">> Failing command is '$bc' on line $ln and status is $ss <<" >&2
+}
+
+trap trapERR ERR
 
 # Check if the directory is provided
 if [[ -z "$1" ]]; then
@@ -29,6 +36,10 @@ time_to_seconds() {
 output() {
     transcript_file="$1"
     values="$2"
+    if [[ -n "$(grep "$header" "$transcript_file")" ]]; then
+        echo "Extra columns already present in $transcript_file, skipping"
+        return 0
+    fi
     # Add the extra columns to the end of the transcript file
     sed -i "1s/\$/,$header/" "$transcript_file"
     sed -i "2s/\$/,$values/" "$transcript_file"
@@ -39,12 +50,13 @@ transcript_name="transcript.csv"
 default_values=$(echo "$header" | sed -E "s/[^,]*(,|$)/$default\1/g")
 
 analyze_log() {
+    trap trapERR ERR
     dir="$1"
     # dir already contains a trailing /
-    transcript_file="$dir$transcript_name"
+    transcript_file="$dir""metrics/$transcript_name"
 
     if [[ ! -f "$transcript_file" ]]; then
-        echo "Warning: transcript.csv missing"
+        echo "Warning: $transcript_file missing $(pwd)"
         return 1
     fi
 
@@ -94,13 +106,19 @@ analyze_log() {
     last_coverage=$(time_to_seconds "$(echo "$log" | grep "$covered_pattern" | tail -1)")
     start_time=$(time_to_seconds "$(echo "$log" | grep -E "$time_pattern" | head -1)")
     end_time=$(time_to_seconds "$(echo "$log" | grep -E "$time_pattern" | tail -1)")
-    last_coverage_time=$(echo "$last_coverage - $start_time" | bc)
+    if [[ "$last_coverage" = "-" || "$start_time" = "-" ]]; then
+        last_coverage_time="-"
+    else
+        last_coverage_time=$(echo "$last_coverage - $start_time" | bc)
+    fi
     total_time=$(echo "$end_time - $start_time" | bc)
 
-    covered=$(echo "$targets - $uncovered" | bc)
+    if [[ "$targets" = "-" || "$uncovered" = "-" ]]; then
+        covered="-"
+    else
+        covered=$(echo "$targets - $uncovered" | bc)
+    fi
 
-    # echo "uncovered:$uncovered"
-    # echo "file:$log_file"
     output "$transcript_file" "$targets,$infeasible,$uncovered,$covered,$last_coverage_time,$total_time"
 }
  

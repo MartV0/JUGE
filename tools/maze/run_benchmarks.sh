@@ -51,12 +51,12 @@ EOF
     echo "Generating tests for $name with time budget $TIME_BUDGET"
     contest_generate_tests.sh "$name" 10 1 $TIME_BUDGET > state_log.txt 2> error_log.txt
 
-    echo "Analysing logs for $name"
-    dir_name=results_"$name"_"$TIME_BUDGET"
-    ./log_analyzer.sh "$dir_name"
-
     echo "Computing metrics for $name with time budget $TIME_BUDGET"
+    dir_name=results_"$name"_"$TIME_BUDGET"
     contest_compute_metrics.sh "$dir_name" > state_log.txt 2> error_log.txt
+
+    echo "Analysing logs for $name"
+    ./log_analyzer.sh "$dir_name"
 
     echo "Finished benchmark $name"
     echo "-----------------------------------"
