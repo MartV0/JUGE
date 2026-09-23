@@ -30,3 +30,15 @@ Gemfile.lock
 
 # Benchmark results
 results*/
+
+# temp files
+.~lock.*#
+
+# log files
+error.txt
+error_log.txt
+state_log.txt
+error.log
+log.txt
+log_detailed.txt
+maze.log
