@@ -38,7 +38,7 @@ for benchmark in "${BENCHMARKS[@]}"; do
     cat > "./runtool" << EOF
 #!/bin/bash
 
-java -cp lib/maze_runtool-1.0.0.jar sbst.runtool.Main "$strategy" "$extraArgs"
+java -cp lib/maze_runtool-1.1.jar sbst.runtool.Main "$strategy" "$extraArgs"
 EOF
     chmod +x "./runtool"
 
@@ -47,7 +47,7 @@ EOF
     #    concrete_name="CD"
     #fi
     #name="maze-${strategy//,/+}-${concrete_name}"
-    name="maze-${strategy//,/+}"
+    name="maze-${strategy//,/+}${extraArgs//,/+}"
     echo "Generating tests for $name with time budget $TIME_BUDGET"
     contest_generate_tests.sh "$name" 10 1 $TIME_BUDGET > state_log.txt 2> error_log.txt
 

@@ -64,12 +64,8 @@ public class MazeTool implements ITestingTool {
             //command.add("--concrete-driven=" + concreteDriven);
             // other params which are fixed:
             command.add("--max-depth=400");      
-            command.add("--max-array-size=10") ;  
-            command.add("--constrain-FP-params-to-normal-numbers=true") ;
             command.add("--check-divbyZero=true") ;     		     
             command.add("--junit-version=JUnit4");
-            // reporting params:
-            command.add("--export-summary=true") ; 	
             
             System.err.println("Running Maze with command: " + command);
             pbuilder.command(command);
