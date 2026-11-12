@@ -19,7 +19,7 @@ cd "$1" || exit
 time_pattern="^([0-9]{2}):([0-9]{2}):([0-9]{2}).([0-9]{3}) .*$"
 # default value that gets used when data is missing or not applicable
 default="-"
-header="targets,infeasible,uncovered,covered,lastCoverageTime,totalTime"
+header="targets,infeasible,uncovered,covered,coveredRatio,undiscovered,lastCoverageTime,totalTime"
 # Takes a log entry and converts the time to seconds since 00:00
 time_to_seconds() {
     if [[ -n "$1" ]]; then
@@ -76,10 +76,16 @@ analyze_log() {
         added_pattern="^.*Added ([0-9]*) path targets, ([0-9]*) paths infeasible"
         uncovered_pattern="^.* ([0-9]*) Uncovered target paths"
         covered_pattern="Covered prime path(s)"
+        undiscovered_pattern="^.* ([0-9]*) Undiscovered target paths"
+        undiscovered=$(echo "$log" | grep -E "$undiscovered_pattern" | sed -E "s/$undiscovered_pattern/\1/")
+        if [[ -z "$undiscovered" ]]; then
+            undiscovered="$default"
+        fi
     elif [[ $strategy == "BasisPathStrategy" ]]; then
         added_pattern="^.*Added new target with cyclomatic complexity ([0-9]*)"
         uncovered_pattern="^.* ([0-9]*) too few independent paths in basis sets"
         covered_pattern="Found new independent vector"
+        undiscovered="-"
     else
         output "$transcript_file" "$default_values"
         return 0
@@ -115,11 +121,13 @@ analyze_log() {
 
     if [[ "$targets" = "-" || "$uncovered" = "-" ]]; then
         covered="-"
+        covered_ratio="-"
     else
         covered=$(echo "$targets - $uncovered" | bc)
+        covered_ratio=$(echo "scale=5;$covered * 100 / $targets" | bc)
     fi
 
-    output "$transcript_file" "$targets,$infeasible,$uncovered,$covered,$last_coverage_time,$total_time"
+    output "$transcript_file" "$targets,$infeasible,$uncovered,$covered,$covered_ratio,$undiscovered,$last_coverage_time,$total_time"
 }
  
 for dir in */
