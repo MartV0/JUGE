@@ -7,13 +7,13 @@
 #
 
 BENCHMARKS=(
-    "DFS"
-    "BFS"
+    "PrimePath"
+    "EdgePair"
+    "Edge"
+    "Node"
+    "BasisPath"
     "SGS"
-    "RPS,COS"
-    "FOS"
     "FOS,COS"
-    "PP" "d,b,h"
 )
 
 # Check if the time budget is provided
