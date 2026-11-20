@@ -39,6 +39,7 @@ error.txt
 error_log.txt
 state_log.txt
 error.log
+err.logs
 log.txt
 log_detailed.txt
 maze.log
