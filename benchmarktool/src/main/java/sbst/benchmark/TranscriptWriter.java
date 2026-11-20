@@ -53,7 +53,14 @@ public class TranscriptWriter implements IToolListener {
                 // timing metrics
                 "preparationTime," + "generationTime," + "executionTime," +
                 // test cases
-                "testcaseNumber," + "uncompilableNumber," + "brokenTests," +
+                "testcaseNumber," + "uncompilableNumber," + 
+                // amount of times test cases invoke the target class
+                //targetInvocationNumber,testLines,
+                "targetInvocationNumber," + 
+                // lines of code in test classes
+                "testLines," +
+                // test cases
+                "brokenTests," +
                 // fault detection score
                 "failTests," +
                 // coverage metrics
@@ -93,7 +100,7 @@ public class TranscriptWriter implements IToolListener {
     @Override
     public void endClass(String cname, File testcaseDir, List<File> extraCP) {
         long genTime, execTime;
-        int numTestCases = 0;
+        int numTestCases, invocationNumber, testLines = 0;
 
         int d4jBrokenTests = 0, d4jFailTests = 0, d4jLinesTotal = 0, d4jLinesCovered = 0, d4jConditionsTotal = 0,
                 d4jConditionsCovered = 0, d4jMutantsGenerated = 0, d4jMutantsCovered = 0, d4jMutantsKilled = 0,
@@ -138,6 +145,9 @@ public class TranscriptWriter implements IToolListener {
                 // numTestCases = testSuite.getTestSrcFiles().size() - 1;
                 // -1 because of the dummy class
                 numTestCases = testSuite.getTestcaseNumber(testcaseDir) - 1;
+                invocationNumber = testSuite.getTestCUTInvocationNumber(testcaseDir);
+                // -5 because of the dummy class
+                testLines = testSuite.getTestLOC(testcaseDir) - 5;
                 execTime = testSuite.getExecTime();
 
                 int uncompilableNumber = testSuite.getNumberOfUncompilableTestClasses();
@@ -154,6 +164,7 @@ public class TranscriptWriter implements IToolListener {
 
                 transcript.println(toolName + "," + benchmark + "," + cname + "," + runNumber + "," + prepTime + ","
                         + genTime + "," + execTime + "," + numTestCases + "," + uncompilableNumber + ","
+                        + invocationNumber + "," + testLines + ","
                         + d4jBrokenTests + "," + d4jFailTests + "," + d4jLinesTotal + "," + d4jLinesCovered + ","
                         + (d4jLinesTotal == 0 ? 0.0f : (float) d4jLinesCovered / (float) d4jLinesTotal * 100.0f) + ","
                         + d4jConditionsTotal + "," + d4jConditionsCovered + ","
@@ -178,6 +189,8 @@ public class TranscriptWriter implements IToolListener {
                 Main.info("\tTool test cases generation time (ms): " + genTime);
                 Main.info("\tTest cases execution time (ms): " + execTime);
                 Main.info("\tTest case number: " + numTestCases);
+                Main.info("\tTarget invocation number: " + invocationNumber);
+                Main.info("\tTest lines of code: " + testLines);
                 Main.info("\tUncompilable Test Classes: " + uncompilableNumber);
                 Main.info("\tBroken tests number: " + d4jBrokenTests);
                 Main.info("\tFailing tests number: " + d4jFailTests);

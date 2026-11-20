@@ -1,7 +1,7 @@
 package sbst.benchmark;
 
 class ExecutionResult {
-    public static final int FIELD_LENGTH = 25;
+    public static final int FIELD_LENGTH = 27;
 
     String tool;
     String benchmark;
@@ -12,6 +12,8 @@ class ExecutionResult {
     int executionTime;
     int testcaseNumber;
     int uncompilableNumber;
+    int invocationNumber;
+    int testLines;
     int brokenTests;
     int failTests;
     int linesTotal;

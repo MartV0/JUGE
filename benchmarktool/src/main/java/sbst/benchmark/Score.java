@@ -459,7 +459,7 @@ public class Score {
     private static ExecutionResult readFields(String[] fields) throws IllegalArgumentException {
         ExecutionResult r = new ExecutionResult();
         r.tool = fields[0];
-        r.timeBudget = Integer.valueOf(fields[23]);
+        r.timeBudget = Integer.valueOf(fields[25]);
         r.benchmark = fields[1];
         r.className = fields[2];
         r.runId = Integer.valueOf(fields[3]);
@@ -469,21 +469,23 @@ public class Score {
             r.executionTime = Integer.valueOf(fields[6]);
             r.testcaseNumber = Integer.valueOf(fields[7]);
             r.uncompilableNumber = Integer.valueOf(fields[8]);
-            r.brokenTests = Integer.valueOf(fields[9]);
-            r.failTests = Integer.valueOf(fields[10]);
-            r.linesTotal = Integer.valueOf(fields[11]);
-            r.linesCovered = Integer.valueOf(fields[12]);
-            r.linesCoverageRatio = Double.valueOf(fields[13]) / 100;
-            r.conditionsTotal = Integer.valueOf(fields[14]);
-            r.conditionsCovered = Integer.valueOf(fields[15]);
-            r.conditionsCoverageRatio = Double.valueOf(fields[16]) / 100;
-            r.mutantsTotal = Integer.valueOf(fields[17]);
-            r.mutantsCovered = Integer.valueOf(fields[18]);
-            r.mutantsCoverageRatio = Double.valueOf(fields[19]) / 100;
-            r.mutantsKilled = Integer.valueOf(fields[20]);
-            r.mutantsKillRatio = Double.valueOf(fields[21]) / 100;
-            r.mutantsAlive = Integer.valueOf(fields[22]);
-            r.totalTestClasses = Integer.valueOf(fields[24]);
+            r.invocationNumber = Integer.valueOf(fields[9]);
+            r.testLines = Integer.valueOf(fields[10]);
+            r.brokenTests = Integer.valueOf(fields[11]);
+            r.failTests = Integer.valueOf(fields[12]);
+            r.linesTotal = Integer.valueOf(fields[13]);
+            r.linesCovered = Integer.valueOf(fields[14]);
+            r.linesCoverageRatio = Double.valueOf(fields[15]) / 100;
+            r.conditionsTotal = Integer.valueOf(fields[16]);
+            r.conditionsCovered = Integer.valueOf(fields[17]);
+            r.conditionsCoverageRatio = Double.valueOf(fields[18]) / 100;
+            r.mutantsTotal = Integer.valueOf(fields[19]);
+            r.mutantsCovered = Integer.valueOf(fields[20]);
+            r.mutantsCoverageRatio = Double.valueOf(fields[21]) / 100;
+            r.mutantsKilled = Integer.valueOf(fields[22]);
+            r.mutantsKillRatio = Double.valueOf(fields[23]) / 100;
+            r.mutantsAlive = Integer.valueOf(fields[24]);
+            r.totalTestClasses = Integer.valueOf(fields[26]);
 
             checkValidRow(r);
         }

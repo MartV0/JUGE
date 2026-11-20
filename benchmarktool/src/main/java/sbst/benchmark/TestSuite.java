@@ -102,27 +102,98 @@ public class TestSuite {
         return testCaseFiles;
     }
 
-    public int getTestcaseNumber(final File testCaseDir) {
-        int numberTC = 0;
+    /** Gets the number of time the test cases invoke the target classes */
+    public int getTestCUTInvocationNumber(final File testCaseDir) {
+        int invocations = 0;
         List<String> testSrc = getTestSrcFiles(testCaseDir);
+        List<String> classes = new ArrayList<String>();
+        for (String clazz: task.getClassNames()) {
+            String[] classSplit = clazz.split("\\.");
+            classes.add(classSplit[classSplit.length-1]);
+        }
         String line;
         for (String src : testSrc) {
             try {
+                // Only count files that actually contain any tests
+                if (getTestcaseNumberFile(src) <= 0) continue;
                 BufferedReader br = new BufferedReader(
                         new FileReader(testCaseDir.getAbsolutePath() + File.separator + src));
                 try {
                     while ((line = br.readLine()) != null) {
-                        if (line.contains("@Test") || line.contains("@org.junit.Test")) {
-                            numberTC++;
+                        for (String clazz: classes) {
+                            if (line.contains(clazz + ".") || line.contains("new " + clazz + "(")) {
+                                invocations++;
+                            }
                         }
                     }
                 } finally {
                     br.close();
                 }
             } catch (Throwable t) {
-                Main.info("Could not calculate number of est cases!");
+                Main.info("Could not calculate amount of invocations!");
                 t.printStackTrace(Main.debugStr);
             }
+        }
+        return invocations;
+    }
+
+
+    /** Gets the number of lines of code of the test cases */
+    public int getTestLOC(final File testCaseDir) {
+        int loc = 0;
+        List<String> testSrc = getTestSrcFiles(testCaseDir);
+        String line;
+        for (String src : testSrc) {
+            try {
+                // Only count files that actually contain any tests
+                if (getTestcaseNumberFile(src) <= 0) continue;
+                BufferedReader br = new BufferedReader(
+                        new FileReader(testCaseDir.getAbsolutePath() + File.separator + src));
+                try {
+                    while ((line = br.readLine()) != null) {
+                        if (!line.replaceAll("\\s", "").isEmpty()) {
+                            loc++;
+                        }
+                    }
+                } finally {
+                    br.close();
+                }
+            } catch (Throwable t) {
+                Main.info("Could not calculate loc of test cases!");
+                t.printStackTrace(Main.debugStr);
+            }
+        }
+        return loc;
+    }
+
+    /** Get test case number of specific file*/
+    private int getTestcaseNumberFile(String src) {
+        int numberTC = 0;
+        try {
+            BufferedReader br = new BufferedReader(
+                    new FileReader(testCaseDir.getAbsolutePath() + File.separator + src));
+            try {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (line.contains("@Test") || line.contains("@org.junit.Test")) {
+                        numberTC++;
+                    }
+                }
+            } finally {
+                br.close();
+            }
+        } catch (Throwable t) {
+            Main.info("Could not calculate number of test cases!");
+            t.printStackTrace(Main.debugStr);
+        }
+        return numberTC;
+    }
+
+    public int getTestcaseNumber(final File testCaseDir) {
+        int numberTC = 0;
+        List<String> testSrc = getTestSrcFiles(testCaseDir);
+        for (String src : testSrc) {
+            numberTC += getTestcaseNumberFile(src);
         }
         return numberTC;
     }

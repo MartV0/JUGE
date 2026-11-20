@@ -13,7 +13,7 @@ then
 fi
 
 # header might change with new columns!
-header="tool,benchmark,class,run,preparationTime,generationTime,executionTime,testcaseNumber,uncompilableNumber,brokenTests,failTests,linesTotal,linesCovered,linesCoverageRatio,conditionsTotal,conditionsCovered,conditionsCoverageRatio,mutantsTotal,mutantsCovered,mutantsCoverageRatio,mutantsKilled,mutantsKillRatio,mutantsAlive,timeBudget,totalTestClasses,targets,infeasible,uncovered,covered,coveredRatio,undiscovered,lastCoverageTime,totalTime"
+header="tool,benchmark,class,run,preparationTime,generationTime,executionTime,testcaseNumber,uncompilableNumber,targetInvocationNumber,testLines,brokenTests,failTests,linesTotal,linesCovered,linesCoverageRatio,conditionsTotal,conditionsCovered,conditionsCoverageRatio,mutantsTotal,mutantsCovered,mutantsCoverageRatio,mutantsKilled,mutantsKillRatio,mutantsAlive,timeBudget,totalTestClasses,targets,infeasible,uncovered,covered,coveredRatio,undiscovered,lastCoverageTime,totalTime"
 
 echo $header >$RESULTS_TRANSCRIPT
 echo "Writing all transcripts into: $RESULTS_TRANSCRIPT"
