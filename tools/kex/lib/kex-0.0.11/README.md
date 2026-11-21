@@ -16,6 +16,19 @@ Kex is a platform for analysis of Java bytecode.
 
 ## Build
 
+* You might need to add github credentials to `~/.m2/settings.xml` to retreive some packages:
+    ```xml
+    <settings>
+      <servers>
+        <server>
+          <id>github-vorpal-research-kotlin-maven</id>
+          <username>YOUR_GITHUB_USERNAME</username>
+          <password>YOUR_GITHUB_PAT</password>
+        </server>
+      </servers>
+    </settings>
+    ```
+
 * build jar with all the dependencies:
     ```
     mvn clean package
